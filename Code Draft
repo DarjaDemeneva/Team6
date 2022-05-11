@@ -3,20 +3,48 @@ import json
 
 def jprint(obj):
     text = json.dumps(obj, sort_keys=True, indent=4)
-    print(text)
+    return print(text)
 
 gene = input('Which gene are you looking for?\n')
-response = requests.get('http://mygene.info/v3/gene/{}'.format(gene))
+output = requests.get('http://mygene.info/v3/gene/{}'.format(gene))
+response = output.json()
 
-# jprint(response.json())
+# jprint(response)
 
-summary = response.json()["symbol"],response.json()["type_of_gene"], response.json()["summary"], response.json()["map_location"]
-jprint(summary)
+gene_summary = response["symbol"],response["type_of_gene"], response["map_location"], response["summary"]
+jprint(gene_summary)
 
 Example output:
+Which gene are you looking for?
+ 1017
 [
     "CDK2",
     "protein-coding",
-    "This gene encodes a member of a family of serine/threonine protein kinases that participate in cell cycle regulation. The encoded protein is the catalytic subunit of the cyclin-dependent protein kinase complex, which regulates progression through the cell cycle. Activity of this protein is especially critical during the G1 to S phase transition. This protein associates with and regulated by other subunits of the complex including cyclin A or E, CDK inhibitor p21Cip1 (CDKN1A), and p27Kip1 (CDKN1B). Alternative splicing results in multiple transcript variants. [provided by RefSeq, Mar 2014].",
-    "12q13.2"
+    "12q13.2",
+    "This gene encodes a member of a family of serine/threonine protein kinases that participate in cell cycle regulation. The encoded protein is the catalytic subunit of the cyclin-dependent protein kinase complex, which regulates progression through the cell cycle. Activity of this protein is especially critical during the G1 to S phase transition. This protein associates with and regulated by other subunits of the complex including cyclin A or E, CDK inhibitor p21Cip1 (CDKN1A), and p27Kip1 (CDKN1B). Alternative splicing results in multiple transcript variants. [provided by RefSeq, Mar 2014]."
 ]
+
+go_BP = response["go"]["BP"]
+
+go_CC = response["go"]["CC"]
+
+go_MF = response["go"]["MF"]
+
+go = [ go_BP, go_CC, go_MF ]
+
+for element in go:
+    for qualifier in element:
+            print(qualifier["qualifier"], qualifier["term"])
+            
+Example output:
+involved_in G1/S transition of mitotic cell cycle
+involved_in G2/M transition of mitotic cell cycle
+involved_in negative regulation of transcription by RNA polymerase II
+involved_in DNA replication
+involved_in DNA repair...
+
+To get information about the gene variants with annotation from ClinVar
+
+output_2 = requests.get('https://myvariant.info/v1/query/?q{}=_exists_:clinvar'.format(response["symbol"]))
+response_2 = output_2.json()
+jprint(response_2)
