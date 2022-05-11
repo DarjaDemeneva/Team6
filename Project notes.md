@@ -9,6 +9,8 @@ https://mygene.info for looking up a specific gene
 
 https://myvariant.info can use ClinVar annotations for deriving information about gene variants and disease-causing mutations
 
+https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=clinvar&id=65533&retmode=json ClinVar API
+
 https://www.ncbi.nlm.nih.gov/pmc/tools/developers/ to look for publications 
 
 https://www.programmableweb.com/api/pseudoviewer for visual representation of genetic structures involving RNA
