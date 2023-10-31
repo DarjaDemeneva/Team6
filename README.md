@@ -1,4 +1,4 @@
-# Team6
+# Team6: Gene info 
 Project for the Code First Girls Python course  
 
-Code to get informatino about the genes of interest using API.
+Code to get information about the gene of interest using API.
